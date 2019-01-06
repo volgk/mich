@@ -1,0 +1,81 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2019 Stamatin Cristina <dear.volgk@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+import argparse
+import sys
+
+import lib.common
+import lib.iputils
+
+
+version = "0.1"
+
+
+def createParser():
+    parser = argparse.ArgumentParser(prog='mich',
+                                     description=f"mich - MAC/IP changer, "
+                                                 f"v{version}")
+    parser.add_argument('-v', action='version', version=version)
+    parser.add_argument('-i', help='Get/Set on interface',
+                        nargs='?', default='not specified')
+    parser.add_argument('-a', help='Get/Set IP address', nargs='?',
+                        default='not specified')
+    parser.add_argument('-m', help='Get/Set MAC address', nargs='?',
+                        default='not specified')
+    return parser
+
+
+if __name__ == '__main__':
+    parser = createParser()
+    args = parser.parse_args()
+
+    if args.i == 'not specified' and \
+       args.a == 'not specified' and \
+       args.m == 'not specified':
+        print(f"Need arguments.\n"
+              f"Type {sys.argv[0]} -h for help.", file=sys.stderr)
+        sys.exit(1)
+    else:
+        if args.i == 'not specified':
+            print(f"Interface should be specified. Need more arguments.\n"
+                  f"Type {sys.argv[0]} -h for help.",
+                  file=sys.stderr)
+            sys.exit(2)
+        else:
+            if args.i is None:
+                print(lib.iputils.get_current_ifaces())
+                sys.exit(3)
+            else:
+                if args.a != 'not specified':
+                    if args.a is None:
+                        print(lib.iputils.get_current_ip(args.i))
+                    else:
+                        if not lib.common.am_I_root():
+                            sys.exit(4)
+                        lib.common.set_ip(args.i, args.a)
+
+                if args.m != 'not specified':
+                    if args.m is None:
+                        print(lib.iputils.get_current_mac(args.i))
+                    else:
+                        if not lib.common.am_I_root():
+                            sys.exit(4)
+                        lib.common.set_mac(args.i, args.m)
+                if args.a == 'not specified' and\
+                   args.m == 'not specified':
+                    print(f"Need more arguments.\n"
+                          f"Type {sys.argv[0]} -h hor help.",
+                          file=sys.stderr)
+
+# End of file
