@@ -54,7 +54,12 @@ if __name__ == '__main__':
             sys.exit(2)
         else:
             if args.i is None:
-                print(lib.iputils.get_current_ifaces())
+                ifaces = lib.iputils.get_current_ifaces()
+                if not ifaces:
+                    print("No interface found", file=sys.stderr)
+                else:
+                    for iface in ifaces:
+                        print(iface)
                 sys.exit(3)
             else:
                 if args.a != 'not specified':
