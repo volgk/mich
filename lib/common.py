@@ -48,9 +48,6 @@ def ip2bytes(ip):
 def am_I_root():
     "Check for root privileges."
     if os.geteuid() != 0:
-        print(f"This action required root privileges.\n"
-              f"Run 'sudo {sys.argv[0]}'.",
-              file=sys.stderr)
         return False
     return True
 
