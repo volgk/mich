@@ -20,7 +20,7 @@ import lib.common
 import lib.iputils
 
 program = os.path.basename(sys.argv[0])
-version = "0.1.1"
+version = "0.1.2"
 
 
 def createParser():
