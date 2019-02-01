@@ -38,7 +38,9 @@ For setting IP/MAC addresses the program must be run with root privileges. Try s
 Get the list of network interfaces
 
     $ mich -i
-    ['lo', 'enp1s0f1', 'wlp2s0']
+    lo
+    enp1s0f1
+    wlp2s0
     
 Get current IP address
 
